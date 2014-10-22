@@ -71,7 +71,7 @@ public class FlyService extends Service {
 
         Display display = windowManager.getDefaultDisplay();
         int width = display.getWidth() - 40;
-        int height = display.getHeight() / 2;
+        int height = display.getHeight() / 3;
         popupWindow = new PopupWindow(popupView, width, height);
 
 	}
@@ -101,15 +101,17 @@ public class FlyService extends Service {
 
             if(popupWindow.isShowing()) popupWindow.dismiss();
             else popupWindow.showAsDropDown(chatHead);
-            
+
             return true;
         }
 
         public boolean onScroll (MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            //Log.d(TAG, "Scroll");
+            if(popupWindow.isShowing()) popupWindow.dismiss();
+
             params.x = initialX + (int) (e2.getRawX() - initialTouchX);
             params.y = initialY + (int) (e2.getRawY() - initialTouchY);
             windowManager.updateViewLayout(chatHead, params);
+
             return true;
         }
     }

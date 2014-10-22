@@ -7,7 +7,7 @@
 
     <style name="UnicodeView" parent="android:Widget.Holo.TextView">
         <item name="android:background">#FFFFFF</item>
-        <item name="android:textColor">#CCCCCC</item>
+        <item name="android:textColor">#333333</item>
     </style>
 
 

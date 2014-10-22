@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Kanaung</string>
+    <string name="nothing_copied">No text to display. Please, copy some text first.</string>
 </resources>
