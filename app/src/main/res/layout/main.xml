@@ -5,23 +5,23 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="100dp"
-        android:text="Start" />
+        android:text="@string/start_button" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnStop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
+        android:layout_alignLeft="@+id/btnStart"
+        android:layout_alignRight="@+id/btnStart"
+        android:layout_below="@+id/btnStart"
         android:layout_marginTop="10dp"
-        android:text="Stop" />
+        android:text="@string/stop_button" />
 
 </RelativeLayout>

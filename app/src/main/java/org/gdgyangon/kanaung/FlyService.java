@@ -76,6 +76,12 @@ public class FlyService extends Service {
 
 	}
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        windowManager.removeView(chatHead);
+    }
+
     class FlyGestureListener extends SimpleOnGestureListener {
         private int initialX;
         private int initialY;
