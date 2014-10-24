@@ -12,8 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/unicode_view"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal|top"
             android:gravity="center_horizontal|top"
             android:padding="10dp" />

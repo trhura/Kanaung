@@ -2,6 +2,7 @@ package org.gdgyangon.kanaung;
 
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,8 @@ public class UnicodeView extends TextView {
 
     public UnicodeView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setVerticalScrollBarEnabled(true);
+        setMovementMethod(new ScrollingMovementMethod());
     }
 
     @Override
@@ -35,6 +38,5 @@ public class UnicodeView extends TextView {
                 break;
         }
     }
-
 
 }
