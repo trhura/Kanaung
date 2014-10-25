@@ -16,11 +16,11 @@ public class MainActivity extends Activity {
 
 		Bundle bundle = getIntent().getExtras();
 
-		if(bundle != null && bundle.getString("LAUNCH").equals("YES")) {
+		if(getIntent().hasExtra("LAUNCH") && bundle.getString("LAUNCH").equals("YES")) {
 			startService(new Intent(MainActivity.this, FlyService.class));
 		}
 
-		Button launch = (Button)findViewById(R.id.button1);
+		Button launch = (Button)findViewById(R.id.btnStart);
 		launch.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		Button stop = (Button)findViewById(R.id.button2);
+		Button stop = (Button)findViewById(R.id.btnStop);
 		stop.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		Bundle bundle = getIntent().getExtras();
 
-		if(bundle != null && bundle.getString("LAUNCH").equals("YES")) {
+		if(getIntent().hasExtra("LAUNCH") && bundle.getString("LAUNCH").equals("YES")) {
 			startService(new Intent(MainActivity.this, FlyService.class));
 		}
 		super.onResume();
