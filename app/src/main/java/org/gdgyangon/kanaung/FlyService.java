@@ -1,10 +1,17 @@
 package org.gdgyangon.kanaung;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -40,6 +47,7 @@ public class FlyService extends Service {
 	@Override 
 	public void onCreate() {
 		super.onCreate();
+        createNotification();
 
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -76,10 +84,15 @@ public class FlyService extends Service {
 
 	}
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        windowManager.removeView(chatHead);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
+        if(chatHead != null){
+        windowManager.removeView(chatHead);}
     }
 
     class FlyGestureListener extends SimpleOnGestureListener {
@@ -102,6 +115,15 @@ public class FlyService extends Service {
         }
 
         @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            Log.d("DOUBLETAP","Going into Double Tap");
+            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
+            return true;
+        }
+
+        @Override
         public boolean onSingleTapConfirmed(MotionEvent event) {
             Log.d(TAG, "Motion Up;");
 
@@ -120,5 +142,34 @@ public class FlyService extends Service {
 
             return true;
         }
+    }
+    public void createNotification(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.unicode)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText("Kanaung is running.");
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(2, mBuilder.build());
     }
 }
