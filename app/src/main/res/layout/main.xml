@@ -3,24 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
+    <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
 
     <Button
         android:id="@+id/btnStart"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
-        android:text="@string/start_button" />
+        android:background="@drawable/button"
+        android:layout_marginBottom="10dp"
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/white"
+        android:text="@string/start_button"/>
 
     <Button
         android:id="@+id/btnStop"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/btnStart"
-        android:layout_alignRight="@+id/btnStart"
+        android:background="@drawable/button"
         android:layout_below="@+id/btnStart"
+        android:textColor="@android:color/white"
         android:layout_marginTop="10dp"
         android:text="@string/stop_button" />
 

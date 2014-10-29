@@ -1,10 +1,17 @@
 package org.gdgyangon.kanaung;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -40,6 +47,7 @@ public class FlyService extends Service {
 	@Override 
 	public void onCreate() {
 		super.onCreate();
+        createNotification();
 
         params = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
@@ -76,10 +84,15 @@ public class FlyService extends Service {
 
 	}
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        windowManager.removeView(chatHead);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancelAll();
+        if(chatHead != null){
+        windowManager.removeView(chatHead);}
     }
 
     class FlyGestureListener extends SimpleOnGestureListener {
@@ -102,6 +115,15 @@ public class FlyService extends Service {
         }
 
         @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            Log.d("DOUBLETAP","Going into Double Tap");
+            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getApplicationContext().startActivity(i);
+            return true;
+        }
+
+        @Override
         public boolean onSingleTapConfirmed(MotionEvent event) {
             Log.d(TAG, "Motion Up;");
 
@@ -120,5 +142,25 @@ public class FlyService extends Service {
 
             return true;
         }
+    }
+    public void createNotification(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.unicode)
+                        .setContentTitle(getString(R.string.app_name))
+                        .setContentText("Kanaung is running.");
+        Intent resultIntent = new Intent(getApplicationContext(), MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(2, mBuilder.build());
     }
 }
