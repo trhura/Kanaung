@@ -3,4 +3,5 @@
     <string name="nothing_copied">No text to display. Please, copy some text first.</string>
     <string name="start_button">Start</string>
     <string name="stop_button">Stop</string>
+  <string name="about">About</string>
 </resources>
