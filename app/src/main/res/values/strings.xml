@@ -4,4 +4,5 @@
     <string name="start_button">Start</string>
     <string name="stop_button">Stop</string>
   <string name="about">About</string>
+  <string name="about_licenses">OpenSources Library</string>
 </resources>

@@ -1,16 +1,13 @@
 package org.gdgyangon.kanaung;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.graphics.Point;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Display;
@@ -59,8 +56,8 @@ public class FlyService extends Service {
 		params.gravity = Gravity.TOP | Gravity.LEFT;
 		params.x = DEFAULTX;
 		params.y = DEFAULTY;
-
-        chatHead = new ImageView(this);
+    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        chatHead = (ImageView) inflater.inflate(R.layout.chat_head,null);
         chatHead.setImageResource(R.drawable.unicode);
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -74,7 +71,7 @@ public class FlyService extends Service {
             }
         });
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
         View popupView = inflater.inflate(R.layout.popup_view, null);
 
         Display display = windowManager.getDefaultDisplay();

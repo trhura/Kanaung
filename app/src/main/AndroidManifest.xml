@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+      <activity
+          android:name="org.gdgyangon.kanaung.AboutActivity"
+          android:label="@string/app_name"
+          android:screenOrientation="portrait">
+      </activity>
         <service
             android:name="org.gdgyangon.kanaung.FlyService"
             android:exported="true" />

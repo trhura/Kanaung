@@ -62,6 +62,10 @@ public class MainActivity extends ActionBarActivity {
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId()==R.id.menu){
+      Intent i  = new Intent(this,AboutActivity.class);
+      startActivity(i);
+    }
     return super.onOptionsItemSelected(item);
   }
 }

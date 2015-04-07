@@ -2,4 +2,5 @@
 <resources>
     <color name="MyAwsomeColor">#c41919</color>
     <color name="MyAwsomeDarkerColor">#a01c1c</color>
+    <color name="textColorLink">#FF051BA0</color>
 </resources>
