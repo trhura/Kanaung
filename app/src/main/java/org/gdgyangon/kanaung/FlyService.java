@@ -6,10 +6,10 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -22,7 +22,7 @@ import android.widget.PopupWindow;
 
 import static android.view.GestureDetector.SimpleOnGestureListener;
 
-public class FlyService extends Service {
+public class FlyService extends Service{
   private PopupWindow popupWindow;
   private ImageView chatHead;
   private WindowManager windowManager;
@@ -61,23 +61,37 @@ public class FlyService extends Service {
     windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
     windowManager.addView(chatHead, params);
 
-    gestureDetector = new GestureDetector(this, new FlyGestureListener());
-    chatHead.setOnTouchListener(new View.OnTouchListener() {
-      @Override
-      public boolean onTouch(View view, MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
+      gestureDetector = new GestureDetector(this, new FlyGestureListener());
+      chatHead.setOnTouchListener(new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent event) {
+          return gestureDetector.onTouchEvent(event);
+        }
+      });
+    PopupViewHelper popupViewHelper = new PopupViewHelper(this) {
+      @Override public void onClickFullScreen() {
+        WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight();
+        popupWindow.update(width,height);
+        popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
       }
-    });
 
-    PopupViewHelper popupViewHelper = new PopupViewHelper(this);
+      @Override public void onClickNormalScreen() {
+        WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        int width = display.getWidth();
+        int height = display.getHeight()/2;
+        popupWindow.update(width,height);
+      }
+    };
     View popupView = popupViewHelper.getPopUpView();
 
     Display display = windowManager.getDefaultDisplay();
     int width = display.getWidth() - 40;
     int height = display.getHeight() / 2;
     popupWindow = new PopupWindow(popupView, width, height);
-    popupViewHelper.setPopUpWindow(popupWindow);
-    popupViewHelper.setChatHead(chatHead,params);
     popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_border));
     popupWindow.setFocusable(true);
   }
@@ -122,12 +136,18 @@ public class FlyService extends Service {
 
     @Override
     public boolean onSingleTapConfirmed(MotionEvent event) {
-      Log.d(TAG, "Motion Up;");
-
       if (popupWindow.isShowing()) {
         popupWindow.dismiss();
       } else {
-        popupWindow.showAsDropDown(chatHead);
+        params.x=10;
+        params.y=100;
+        windowManager.updateViewLayout(chatHead,params);
+        new Handler().postDelayed(new Runnable() {
+          @Override public void run() {
+            popupWindow.showAsDropDown(chatHead,10,10);
+          }
+        },200);
+
       }
 
       return true;

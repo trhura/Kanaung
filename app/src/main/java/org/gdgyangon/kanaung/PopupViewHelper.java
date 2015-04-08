@@ -6,21 +6,20 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
 /**
  * Created by yemyatthu on 4/8/15.
  */
-public class PopupViewHelper implements View.OnClickListener {
+public abstract class PopupViewHelper implements View.OnClickListener {
   Context mContext;
   UnicodeEdit mUnicodeEdit;
   UnicodeView mUnicodeView;
   ImageButton mEditButton;
   ImageButton mFullScreenButton;
-  PopupWindow mPopupWindow;
-  View mChathead;
-  WindowManager.LayoutParams mLayoutParams;
+  Button mMagic;
   boolean inEditMode;
   boolean inFullScreen;
 
@@ -34,10 +33,11 @@ public class PopupViewHelper implements View.OnClickListener {
     mUnicodeView = (UnicodeView) view.findViewById(R.id.unicode_view);
     mEditButton = (ImageButton) view.findViewById(R.id.edit_button);
     mFullScreenButton = (ImageButton) view.findViewById(R.id.full_screen_button);
+    mMagic = (Button) view.findViewById(R.id.magic_button);
+    mMagic.setOnClickListener(this);
     mUnicodeEdit.setVisibility(View.INVISIBLE);
     inEditMode = false;
     mEditButton.setOnClickListener(this);
-
     mFullScreenButton.setOnClickListener(this);
     return view;
   }
@@ -58,61 +58,59 @@ public class PopupViewHelper implements View.OnClickListener {
         mUnicodeView.setVisibility(View.VISIBLE);
         mUnicodeEdit.setVisibility(View.GONE);
         mEditButton.setImageResource(R.drawable.ic_mode_edit_white_24dp);
+        if(mUnicodeEdit.getText().length()>0){
         ClipboardManager clipboard =
             (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
         clipboard.setText(mUnicodeEdit.getText());
         mUnicodeView.setText(clipboard.getText());
+        }
         imm.hideSoftInputFromWindow(mUnicodeEdit.getWindowToken(), 0);
         inEditMode = false;
       }
     } else if (view.getId() == R.id.full_screen_button) {
       if (inFullScreen) {
         mFullScreenButton.setImageResource(R.drawable.ic_fullscreen_white_24dp);
-        if (mPopupWindow != null) {
-          onClickNormalScreen(mPopupWindow);
-        }
+        onClickNormalScreen();
         inFullScreen = false;
       } else {
         mFullScreenButton.setImageResource(R.drawable.ic_fullscreen_exit_white_24dp);
-        if (mPopupWindow != null) {
-          onClickFullScreen(mPopupWindow);
-        }
+        onClickFullScreen();
         inFullScreen = true;
+      }
+    }else if(view.getId()==R.id.magic_button){
+     if(mUnicodeEdit.getText().toString().contains("[Unicode]")&&mUnicodeEdit.getText().toString().contains("[Zawgyi]")){
+       return;
+     }
+     switch(Converter.detector(mUnicodeEdit.getText().toString())){
+       case 2:
+         mUnicodeEdit.setText("[Unicode]"+"\n"
+             + Converter.zg12uni51(mUnicodeEdit.getText().toString())+"\n\n"
+         +"[Zawgyi]"+"\n"
+         +mUnicodeEdit.getText());
+         break;
+       case 1:
+         mUnicodeEdit.setText("[Unicode]"+"\n"
+             + mUnicodeEdit.getText().toString()+"\n\n"
+             +"[Zawgyi]"+"\n"
+             +Converter.uni512zg1(mUnicodeEdit.getText().toString()));
       }
     }
   }
 
-  public void setPopUpWindow(PopupWindow popUpWindow) {
-    mPopupWindow = popUpWindow;
+  void clickFullScreen(PopupWindow popupWindow) {
+
+    onClickFullScreen();
   }
 
-  void onClickFullScreen(PopupWindow popupWindow) {
-    WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-    Display display = windowManager.getDefaultDisplay();
-    int width = display.getWidth();
-    int height = display.getHeight();
-    popupWindow.update(width,height);
-    popupWindow.setSoftInputMode(PopupWindow.INPUT_METHOD_NEEDED);
-    if(mChathead!=null){
-      mLayoutParams.x = 0;
-      mLayoutParams.y= 0;
-      windowManager.updateViewLayout(mChathead,mLayoutParams);
-    }
-  }
-
-  void onClickNormalScreen(PopupWindow popupWindow) {
+  void clickNormalScreen(PopupWindow popupWindow) {
     WindowManager windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
     Display display = windowManager.getDefaultDisplay();
     int width = display.getWidth() - 40;
     int height = display.getHeight() / 2;
     popupWindow.update(width,height);
-    if(mChathead!=null){
-      mLayoutParams.x = 10;
-      mLayoutParams.y= 100;
-    windowManager.updateViewLayout(mChathead,mLayoutParams);}
+      onClickNormalScreen();
   }
-  public void setChatHead(View chatHead,WindowManager.LayoutParams params){
-    mChathead = chatHead;
-    mLayoutParams = params;
-  }
+  public abstract void onClickFullScreen();
+
+  public abstract void onClickNormalScreen();
 }

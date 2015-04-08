@@ -4,6 +4,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -22,16 +23,24 @@ public class UnicodeView extends TextView {
     protected void onWindowVisibilityChanged (int visibility) {
         ClipboardManager manager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         CharSequence copiedText = manager.getText();
-        if (copiedText == null) return;
+        if (copiedText == null)      {
+          setText(R.string.nothing_copied);}
+              Log.d("dada", String.valueOf(Converter.detector(copiedText.toString())));
+              switch (Converter.detector(copiedText.toString())){
 
-        switch (visibility) {
-            case VISIBLE:
-                setText(Converter.zg12uni51(copiedText.toString()));
-                break;
+                case 0:
+                  setText(copiedText.toString());
+                  break;
+                case 1:
+                  setText(copiedText.toString());
+                  break;
+                case 2:
+                  setText(Converter.zg12uni51(copiedText.toString()));
+                  break;
+                default:
+                  setText(Converter.zg12uni51(copiedText.toString()));
 
-            case INVISIBLE:
-                setText(R.string.nothing_copied);
-                break;
+
         }
     }
 

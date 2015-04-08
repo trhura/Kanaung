@@ -16,8 +16,4 @@ public class UnicodeEdit extends EditText{
     setMovementMethod(new ScrollingMovementMethod());
   }
 
-  @Override protected void onTextChanged(CharSequence text, int start, int lengthBefore,
-      int lengthAfter) {
-    super.onTextChanged(Converter.zg12uni51(text.toString()), start, lengthBefore, lengthAfter);
-  }
 }
