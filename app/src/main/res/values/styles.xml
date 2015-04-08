@@ -4,8 +4,12 @@
     </style>
 
 
-    <style name="UnicodeView" parent="android:Widget.Holo.TextView">
+    <style name="UnicodeView" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:background">#FFFFFF</item>
         <item name="android:textColor">#333333</item>
     </style>
+  <style name="UniCodeEdit" parent="Widget.AppCompat.EditText">
+    <item name="android:background">#FFFFFF</item>
+    <item name="android:textColor">#333333</item>
+  </style>
 </resources>

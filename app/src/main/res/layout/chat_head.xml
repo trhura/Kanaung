@@ -4,6 +4,6 @@
     android:src="@drawable/unicode"
     android:layout_width="48dp"
     android:layout_height="48dp"
-    android:scaleType="fitCenter">
+    android:scaleType="centerInside">
 
 </ImageView>

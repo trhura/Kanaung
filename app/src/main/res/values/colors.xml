@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="MyAwsomeColor">#c41919</color>
+    <color name="MyAwsomeColor">#DE0029</color>
     <color name="MyAwsomeDarkerColor">#a01c1c</color>
     <color name="textColorLink">#FF051BA0</color>
 </resources>
