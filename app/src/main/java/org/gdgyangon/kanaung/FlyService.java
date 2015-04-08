@@ -49,7 +49,7 @@ public class FlyService extends Service {
     params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
         WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_PHONE,
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
-
+    params.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING;
     params.gravity = Gravity.TOP | Gravity.LEFT;
     params.x = DEFAULTX;
     params.y = DEFAULTY;
@@ -76,6 +76,8 @@ public class FlyService extends Service {
     int width = display.getWidth() - 40;
     int height = display.getHeight() / 2;
     popupWindow = new PopupWindow(popupView, width, height);
+    popupViewHelper.setPopUpWindow(popupWindow);
+    popupViewHelper.setChatHead(chatHead,params);
     popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_border));
     popupWindow.setFocusable(true);
   }

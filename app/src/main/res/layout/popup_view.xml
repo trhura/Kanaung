@@ -12,6 +12,7 @@
       android:text="@string/nothing_copied"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:gravity="top|left"
       android:id="@+id/unicode_view"
       android:padding="10dp"/>
     <org.gdgyangon.kanaung.UnicodeEdit
@@ -20,7 +21,8 @@
         android:padding="10dp"
         style="@style/UniCodeEdit"
         android:textCursorDrawable="@null"
-        android:inputType="textNoSuggestions"
+        android:gravity="top|left"
+        android:inputType="textNoSuggestions|textMultiLine"
         android:cursorVisible="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

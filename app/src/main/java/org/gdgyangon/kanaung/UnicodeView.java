@@ -4,11 +4,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by trhura on 10/22/14.
